@@ -1,0 +1,121 @@
+#!/bin/bash
+
+# Wireguard Scripts, for importing wireguard config to Network Manager.
+
+#Check for nmcli, if it does not exist close the script.
+# ------------------------------------------------------
+
+if command nmcli -v>/dev/null; then
+	echo "nmcli exist";
+else
+	echo "This script is written for use with nmcli tool, it does not appear to be installed"
+	echo "Exiting script."
+	sleep 10
+	exit 1;
+fi;
+
+# Check for kdialog
+# -----------------
+
+if command kdialog -v>/dev/null; then
+	echo "kdialog exist"
+	kdialog=1;
+else
+	echo "kdialog is missing"
+	kdialog=0;
+fi;
+#Check for Wireguard
+if command wg -v >/dev/null; then
+	echo "wireguard exist"
+	wgv=1;
+else
+	echo "Wireguard is missing"
+	wgv=0;
+fi;
+
+# Ask user if they are and administrator and like to have script install for them
+# -------------------------------------------------------------------------------
+
+if [ $kdialog = 0 ]; then
+	if [ $wgv = 0 ]; then
+		while ture; do
+		read -p "Missing Kdialog and Wireguard, are you an administrator and like to proceed? (yes/no) " yn
+		case $yn in
+			yes ) echo ok, we will proceed;;
+			no ) echo exiting...;
+				exit;;
+			* ) echo invalid response;
+				exit 1;;
+		esac
+		done
+	fi;
+elif [ $kdialog = 1 ]; then
+	if [ $wgv = 0 ]; then
+		kdialog --yesno  "Wireguard, click yes if you are an administrator on the system and would like to proceed"
+		if [ $? = 1 ]; then
+			kdialog --error "Please have your administrator install wireguard on your pc, in order to use this script"
+			exit 1;
+		fi;
+	fi;
+fi;
+
+if [ $kdialog = 0 ]; then
+	if [ $wgv = 0 ]; then
+		echo "both kdialog, and wireguard are missing attempting to install both of these"
+		sudo apt-get install kdialog wireguard -y
+		echo "Relaunching Script in 10 Seconds"
+		./wg-import-script;
+	fi;
+elif [ $kdialog = 1 ]; then
+	if [ $wgv = 0 ]; then
+		kdialog --msgbox "Wireguard is not installed, attempting to installing it now"
+		sudo apt-get install wireguard -y
+		kdialog --msgbox "Restarting Script"
+		./wg-import-sript;
+	fi;
+fi
+
+# Ask for wireguard .config to import
+# -----------------------------------
+
+kdialog --msgbox "Please choose the wireguard config, you would like to import into Network Manager."
+file=$(kdialog --getopenfilename .);
+if [ "$?" = 0 ]; then
+	fname=$(basename -- "${file%.*}")
+	nmcli connection import type wireguard file "$file"
+	sleep .5
+	nmcli connection down "$fname";
+elif [ "$?" = 1 ]; then
+	kdialog --sorry "YOU CHOSE CANCEL"
+	exit 1;
+else
+	kdialog --error "ERROR"
+	exit 1;
+fi;
+
+# Ask if you would like to have connection autoconnect
+# ----------------------------------------------------
+
+kdialog --yesno "Would you like to the connection to auto connect?"
+if [ "$?" = 1 ]; then
+	nmcli connection modify "$fname" connection.autoconnect no;
+fi
+
+# Rename connection
+# -----------------
+
+kdialog --yesno "Would you like to rename the connection for imported wireguard config"
+if [ "$?" = 0 ]; then
+	rname=$(kdialog --inputbox "What would you like to rename inported config to?")
+	if [ "$?" = 0 ]; then
+	nmcli connection modify "$fname" connection.id "$rname"
+	fi;
+else
+	kdialog --msgbox "Exiting Script, you should be able to toggle $fname via GUI now"
+	exit 1;
+fi;
+
+kdialog --yesno "Should the $rname interface be connected now?"
+if [ "$?" = 0 ]; then
+	nmcli connection up "$rname";
+fi;
