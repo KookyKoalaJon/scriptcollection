@@ -85,11 +85,7 @@ if [ "$?" = 0 ]; then
 	nmcli connection import type wireguard file "$file"
 	sleep .5
 	nmcli connection down "$fname";
-elif [ "$?" = 1 ]; then
-	kdialog --sorry "YOU CHOSE CANCEL"
-	exit 1;
 else
-	kdialog --error "ERROR"
 	exit 1;
 fi;
 
