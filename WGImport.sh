@@ -24,8 +24,17 @@ if [ $INSTALLED = "yes" ]; then
           fi
           if [ -d "$HOME/Scripts/WGImport" ]; then
             echo "WGImport Exist"
-            kdialog --title "Wireguard Install" --error "Wireguard directory exist<br>$HOME/Scrpits/WGimport<br>dPlease Delete this directory to reinstall"
-            exit
+            kdialog --title "Wireguard Import Install" --error "Wireguard directory exist<br>$HOME/Scrpits/WGimport<br>Please delete this directory to re-install"
+            kdialog --title "Wirguard Import Install" --yes-label "Delete" --no-label "Close" --yesno "Would you like to delete the WGImport directory"
+            if [ $? = 0 ]; then
+              cd $HOME/Scripts
+              rm -rf WGImport
+              rm $WGIDESKTOP
+              kdialog --title "Wireguard Import Installer" --msgbox "WGImport is purged, please re-launch script to install."
+              exit 1
+            else
+              exit 1
+            fi
           else
             mkdir $HOME/Scripts/WGImport;
             WGINSTALLDIR="$HOME/Scripts/WGImport";
@@ -33,6 +42,7 @@ if [ $INSTALLED = "yes" ]; then
             cd $WGINSTALLDIR;
             wget "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/wireguard.png";
             echo "[Desktop Entry]" > $WGIDESKTOP;
+            echo "Comment=Import wireguard .conf files into Network Manager" >> $WGIDESKTOP;
             echo "Exec=$WGISH" >> $WGIDESKTOP;
             echo "Icon=$WGINSTALLDIR/wireguard.png" >> $WGIDESKTOP;
             echo "Name=Wireguard Import" >> $WGIDESKTOP;
@@ -43,17 +53,18 @@ if [ $INSTALLED = "yes" ]; then
             sed -i "s/^INSTALLED=.*/INSTALLED=yes/" $WGISH;
             sed -i "s/^DONTINSTALL=.*/DONTINSTALL=yes/" $WGISH;
             echo "Installer Ran";
+            kdialog --title "Wireguard Import Install" --icon "$ICON" --msgbox "Wireguard Import has been installed.<br> You can delete the downloaded script,<br> launch from the desktop icon or add it<br>to you launcher using the Menu Editor"
             $WGISH;
-            exit;
+            exit 1;
           fi
             ;;
         1)
             ;;
         2)
-            sed -i "s/^DONTINSTALL=.*/DONTINSTALL=yes/" WGImport.sh;
+           sed -i "s/^DONTINSTALL=.*/DONTINSTALL=yes/" WGImport.sh;
             ;;
         *)
-          exit;
+          exit 1;
           ;;
     esac;
     fi
