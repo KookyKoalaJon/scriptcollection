@@ -193,12 +193,12 @@ WIREINSTALL () {
 }
 
 ##Updater...
-wget -N --timestamping "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/version"
-if [ "$version" \> "$versionsh" ]; then
-  wget -nc "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/WGImport.sh"
-  chmod +x WGImport.sh
-  ./WGImport.sh
-fi
+# wget -N --timestamping "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/version"
+# if [ "$version" \> "$versionsh" ]; then
+#  wget -nc "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/WGImport.sh"
+# chmod +x WGImport.sh
+# ./WGImport.sh
+# fi
 
 case $1 in
   *.conf)
