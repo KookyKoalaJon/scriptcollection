@@ -1,6 +1,7 @@
 #! /bin/bash
 # shellcheck disable=SC2181
 source "version"
+versionsh=1.0
 INSTALLED=no
 DONTASK=no
 DELDL=yes
@@ -190,13 +191,15 @@ WIREINSTALL () {
     exit 0
   fi
 }
-sed -i "s#^versionsh=.*#versionsh=$version#" "$WGINSTALLDIR/WGImport.sh"
+
+
 wget -N "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/version"
 
 if [ "$versionsh" ">" "$versionsh" ]; then
   rm WGImport.sh
   wget "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/WGImport.sh"
   chmod +x WGImport.sh
+  ./WGImport.sh
 fi
 
 case $1 in
