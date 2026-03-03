@@ -1,9 +1,9 @@
 #! /bin/bash
 # shellcheck disable=SC2181
 source "version"
-versionsh=1.0
+versionsh=1.0.1
 INSTALLED=no
-DONTASK=no
+DONTASK=yes
 DELDL=yes
 WGDEFAULTDIR="$HOME/Scripts/WGImport"
 WGINSTALLDIR=""
@@ -192,12 +192,10 @@ WIREINSTALL () {
   fi
 }
 
-
-wget -N "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/version"
-
-if [ "$versionsh" ">" "$versionsh" ]; then
-  rm WGImport.sh
-  wget "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/WGImport.sh"
+##Updater...
+wget -N --timestamping "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/version"
+if [ "$version" \> "$versionsh" ]; then
+  wget -nc "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/WGImport.sh"
   chmod +x WGImport.sh
   ./WGImport.sh
 fi
