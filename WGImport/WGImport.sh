@@ -1,8 +1,8 @@
 #! /bin/bash
 # shellcheck disable=SC2181
-versionsh=1.0.1
+versionsh=1.0
 INSTALLED=no
-DONTASK=yes
+DONTASK=no
 DELDL=yes
 WGDEFAULTDIR="$HOME/Scripts/WGImport"
 WGINSTALLDIR=""
@@ -191,21 +191,21 @@ WIREINSTALL () {
 }
 
 ##Updater...
-vfile=./version
-if test -e "$vfile"
-then
-  zflag="-z '$vfile'"
-else
-  zflag=
-fi
-curl -o "$vfile" $zflag "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/version"
-source "version"
+# vfile=./version
+# if test -e "$vfile"
+# then
+#  zflag="-z '$vfile'"
+#  else
+#  zflag=
+# fi
+# curl -o "$vfile" $zflag "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/version"
+# source "version"
 
-if [ "$version" \> "$versionsh" ]; then
-wget -nc "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/WGImport.sh"
-chmod +x WGImport.sh
-./WGImport.sh
-fi
+# if [ "$version" \> "$versionsh" ]; then
+# wget -nc "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/WGImport.sh"
+# chmod +x WGImport.sh
+# ./WGImport.sh
+# fi
 
 case $1 in
   *.conf)
