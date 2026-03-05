@@ -1,6 +1,5 @@
 #! /bin/bash
 # shellcheck disable=SC2181
-source "version"
 versionsh=1.0.1
 INSTALLED=no
 DONTASK=yes
@@ -14,7 +13,6 @@ INAUTOTXT="has been imported you can connect using the networkmanager gui. Would
 
 # Set Working directoy to where this import script is currently
 WGLOCATION=$PWD
-echo "versionsh=1.0" >> version
 WGIHELP () {
 echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 echo "xx                         Kooky Koala's Wireguard Import Script.                              xx"
@@ -193,12 +191,21 @@ WIREINSTALL () {
 }
 
 ##Updater...
-# wget -N --timestamping "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/version"
-# if [ "$version" \> "$versionsh" ]; then
-#  wget -nc "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/WGImport.sh"
-# chmod +x WGImport.sh
-# ./WGImport.sh
-# fi
+vfile=./version
+if test -e "$vfile"
+then
+  zflag="-z '$vfile'"
+else
+  zflag=
+fi
+curl -o "$vfile" $zflag "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/version"
+source "version"
+
+if [ "$version" \> "$versionsh" ]; then
+wget -nc "https://raw.githubusercontent.com/KookyKoalaJon/scriptcollection/refs/heads/main/WGImport/WGImport.sh"
+chmod +x WGImport.sh
+./WGImport.sh
+fi
 
 case $1 in
   *.conf)
