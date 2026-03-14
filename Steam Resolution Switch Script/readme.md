@@ -26,23 +26,25 @@ Download the Script (Github Link), and save it to somewhere safe ideally in a fo
 5. you can edit your .desktop file remove the command-line arguments and set the program launch to your new script to launch the game.
 
 
-Example for Valheim, with a desktop resolution of 1440p  scaled at 120% and a game resolution of 1080p
+# Example
+fValheim, with a desktop resolution of 1440p  scaled at 120% and a game resolution of 1080p at a refresh rate of 165
 
-##Steam Game ID
+#Steam Game ID
 gameid=892970
 ##Output device ID, only needs changed if not your primary monitor.
 outputdevice=1
 
-## Game Window Title ## Game window title in quotes (this is normally the Name value in the desktop file)
+#Game Window Title
+Game window title in quotes (this is normally the Name value in the desktop file)
 gametitle="Valheim"
 
-## Snooze time for game to launch, this may need to be adjusted to get in game.
+#Snooze time for game to launch, this may need to be adjusted to get in game.
 Snooze=15
 
-## Set the game res before launching you want here this will be your resolution@refreshrate see example below
+#Set the game res before launching you want here this will be your resolution@refreshrate see example below
 resgame=1920x1080@165
-## Set your return desktop resolution here
+#Set your return desktop resolution here
 resdesk=2560x1440@165
 
-## if you had your desktop scaled you can set it to return back to this scale 1.2 = 120%
+#if you had your desktop scaled you can set it to return back to this scale 1.2 = 120%
 returnscale=1.2
