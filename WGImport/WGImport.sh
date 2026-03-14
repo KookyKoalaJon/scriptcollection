@@ -30,6 +30,7 @@ echo " "
 exit 0
 }
 DESKTOPICON () {
+printf "[Desktop Entry]\nName=Wireguard Import\n"
 echo "[Desktop Entry]" > "$WGIDESKTOP"
 { echo "Name=Wireguard Import"
   echo "Comment=Import wireguard .conf files into Network Manager"
